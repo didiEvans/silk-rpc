@@ -2,6 +2,7 @@ package com.anker.core.proxy.javassist;
 
 import com.anker.common.constants.RpcConstants;
 import com.anker.common.rpc.RpcInvocation;
+import com.anker.core.cache.CommonClientCache;
 import com.anker.core.client.RpcReferenceWrapper;
 
 import java.lang.reflect.InvocationHandler;
@@ -31,24 +32,24 @@ public class JavassistInvocationHandler implements InvocationHandler {
         rpcInvocation.setAttachments(rpcReferenceWrapper.getAttachments());
         rpcInvocation.setUuid(UUID.randomUUID().toString());
         rpcInvocation.setRetry(rpcReferenceWrapper.getRetry());
-        SEND_QUEUE.add(rpcInvocation);
+        CommonClientCache.SEND_QUEUE.add(rpcInvocation);
         if (rpcReferenceWrapper.isAsync()) {
             return null;
         }
-        RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
+        CommonClientCache.RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
         long beginTime = System.currentTimeMillis();
         int retryTimes = 0;
         while (System.currentTimeMillis() - beginTime < timeOut || rpcInvocation.getRetry() > 0) {
-            Object object = RESP_MAP.get(rpcInvocation.getUuid());
+            Object object = CommonClientCache.RESP_MAP.get(rpcInvocation.getUuid());
             if (object != null && object instanceof RpcInvocation) {
                 RpcInvocation rpcInvocationResp = (RpcInvocation) object;
                 //正常结果
                 if (rpcInvocationResp.getRetry() == 0 || (rpcInvocationResp.getRetry() != 0 && rpcInvocationResp.getE() == null)) {
-                    RESP_MAP.remove(rpcInvocation.getUuid());
+                    CommonClientCache.RESP_MAP.remove(rpcInvocation.getUuid());
                     return rpcInvocationResp.getResponse();
                 } else if (rpcInvocationResp.getE() != null) {
                     if (rpcInvocationResp.getRetry() == 0) {
-                        RESP_MAP.remove(rpcInvocation.getUuid());
+                        CommonClientCache.RESP_MAP.remove(rpcInvocation.getUuid());
                         return rpcInvocationResp.getResponse();
                     }
                 }
@@ -61,13 +62,13 @@ public class JavassistInvocationHandler implements InvocationHandler {
                     rpcInvocation.setResponse(null);
                     //每次重试之后都会将retry值扣减1
                     rpcInvocation.setRetry(rpcInvocation.getRetry() - 1);
-                    RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
-                    SEND_QUEUE.add(rpcInvocation);
+                    CommonClientCache.RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
+                    CommonClientCache.SEND_QUEUE.add(rpcInvocation);
                 }
             }
         }
         //应对一些请求超时的情况
-        RESP_MAP.remove(rpcInvocation.getUuid());
+        CommonClientCache.RESP_MAP.remove(rpcInvocation.getUuid());
         throw new TimeoutException("Wait for response from server on client " + timeOut + "ms,retry times is " + retryTimes + ",service's name is " + rpcInvocation.getTargetServiceName() + "#" + rpcInvocation.getTargetMethod());
     }
 }

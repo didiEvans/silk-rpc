@@ -2,7 +2,7 @@ package com.anker.core.proxy.jdk;
 
 import com.anker.common.constants.RpcConstants;
 import com.anker.common.rpc.RpcInvocation;
-import com.anker.core.cache.CommonServerCache;
+import com.anker.core.cache.CommonClientCache;
 import com.anker.core.client.RpcReferenceWrapper;
 
 import java.lang.reflect.InvocationHandler;
@@ -40,19 +40,18 @@ public class JDKClientInvocationHandler implements InvocationHandler {
         rpcInvocation.setArgs(args);
         rpcInvocation.setUuid(UUID.randomUUID().toString());
         rpcInvocation.setAttachments(rpcReferenceWrapper.getAttachments());
-        CommonServerCache.SEND_QUEUE.add(rpcInvocation);
+        CommonClientCache.SEND_QUEUE.add(rpcInvocation);
         if (rpcReferenceWrapper.isAsync()) {
             return null;
         }
-        RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
+        CommonClientCache.RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
         long beginTime = System.currentTimeMillis();
         int retryTimes = 0;
         // 超时判断
         timeOut = 1000000;
         while (System.currentTimeMillis() - beginTime < timeOut || rpcInvocation.getRetry() > 0) {
-            Object object = RESP_MAP.get(rpcInvocation.getUuid());
+            Object object = CommonClientCache.RESP_MAP.get(rpcInvocation.getUuid());
             if (object instanceof RpcInvocation) {
-                //return ((RpcInvocation) object).getResponse();
                 RpcInvocation rpcInvocationResp = (RpcInvocation) object;
                 if (rpcInvocationResp.getRetry() == 0 && rpcInvocationResp.getE() == null) {
                     return rpcInvocationResp.getResponse();
@@ -64,13 +63,13 @@ public class JDKClientInvocationHandler implements InvocationHandler {
                         retryTimes++;
                         rpcInvocation.setResponse(null);
                         rpcInvocation.setRetry(rpcInvocationResp.getRetry() - 1);
-                        RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
-                        SEND_QUEUE.add(rpcInvocation);
+                        CommonClientCache.RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
+                        CommonClientCache.SEND_QUEUE.add(rpcInvocation);
                     }
                 }
             }
         }
-        RESP_MAP.remove(rpcInvocation.getUuid());
+        CommonClientCache.RESP_MAP.remove(rpcInvocation.getUuid());
         throw new TimeoutException("Wait for response from server on client " + timeOut + "ms,retry times is " + retryTimes + ",service's name is " + rpcInvocation.getTargetServiceName() + "#" + rpcInvocation.getTargetMethod());
     }
 }
