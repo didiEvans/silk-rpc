@@ -7,6 +7,13 @@ import com.anker.core.client.RpcReferenceWrapper;
  * @author Anker
  */
 public interface ProxyFactory {
-
+    /**
+     * 获取代理对象
+     *
+     * @param rpcReferenceWrapper
+     * @param <T>
+     * @return
+     * @throws Throwable
+     */
     <T> T getProxy(RpcReferenceWrapper rpcReferenceWrapper) throws Throwable;
 }

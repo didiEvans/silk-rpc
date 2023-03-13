@@ -1,75 +1,72 @@
-package com.anker.core.proxy.jdk;
+package com.anker.core.proxy.javassist;
 
 import com.anker.common.constants.RpcConstants;
 import com.anker.common.rpc.RpcInvocation;
-import com.anker.core.cache.CommonServerCache;
 import com.anker.core.client.RpcReferenceWrapper;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-public class JDKClientInvocationHandler implements InvocationHandler {
+public class JavassistInvocationHandler implements InvocationHandler {
+
 
     private final static Object OBJECT = new Object();
 
     private RpcReferenceWrapper rpcReferenceWrapper;
 
-    private int timeOut = RpcConstants.DEFAULT_TIMEOUT;
+    private Long timeOut = Long.valueOf(RpcConstants.DEFAULT_TIMEOUT);
 
-    public JDKClientInvocationHandler(RpcReferenceWrapper rpcReferenceWrapper) {
+    public JavassistInvocationHandler(RpcReferenceWrapper rpcReferenceWrapper) {
         this.rpcReferenceWrapper = rpcReferenceWrapper;
-        timeOut = Integer.valueOf(String.valueOf(rpcReferenceWrapper.getAttachments().get("timeOut")));
+        timeOut = Long.valueOf(String.valueOf(rpcReferenceWrapper.getAttachments().get("timeOut")));
     }
 
-    /**
-     * 封装RpcInvocation，并将其放入
-     *   1.RESP_MAP -> 将请求与响应相关联，便于客户端接收结果时加以判断
-     *   2.SEND_QUEUE -> 客户端中的异步线程会从阻塞队列中取出并按照顺序发送给服务端
-     * @param proxy
-     * @param method
-     * @param args
-     * @return
-     * @throws Throwable
-     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         RpcInvocation rpcInvocation = new RpcInvocation();
+        rpcInvocation.setArgs(args);
         rpcInvocation.setTargetMethod(method.getName());
         rpcInvocation.setTargetServiceName(rpcReferenceWrapper.getAimClass().getName());
-        rpcInvocation.setArgs(args);
-        rpcInvocation.setUuid(UUID.randomUUID().toString());
         rpcInvocation.setAttachments(rpcReferenceWrapper.getAttachments());
-        CommonServerCache.SEND_QUEUE.add(rpcInvocation);
+        rpcInvocation.setUuid(UUID.randomUUID().toString());
+        rpcInvocation.setRetry(rpcReferenceWrapper.getRetry());
+        SEND_QUEUE.add(rpcInvocation);
         if (rpcReferenceWrapper.isAsync()) {
             return null;
         }
         RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
         long beginTime = System.currentTimeMillis();
         int retryTimes = 0;
-        // 超时判断
-        timeOut = 1000000;
         while (System.currentTimeMillis() - beginTime < timeOut || rpcInvocation.getRetry() > 0) {
             Object object = RESP_MAP.get(rpcInvocation.getUuid());
-            if (object instanceof RpcInvocation) {
-                //return ((RpcInvocation) object).getResponse();
+            if (object != null && object instanceof RpcInvocation) {
                 RpcInvocation rpcInvocationResp = (RpcInvocation) object;
-                if (rpcInvocationResp.getRetry() == 0 && rpcInvocationResp.getE() == null) {
+                //正常结果
+                if (rpcInvocationResp.getRetry() == 0 || (rpcInvocationResp.getRetry() != 0 && rpcInvocationResp.getE() == null)) {
+                    RESP_MAP.remove(rpcInvocation.getUuid());
                     return rpcInvocationResp.getResponse();
                 } else if (rpcInvocationResp.getE() != null) {
                     if (rpcInvocationResp.getRetry() == 0) {
+                        RESP_MAP.remove(rpcInvocation.getUuid());
                         return rpcInvocationResp.getResponse();
-                    }
-                    if (System.currentTimeMillis() - beginTime > timeOut) {
-                        retryTimes++;
-                        rpcInvocation.setResponse(null);
-                        rpcInvocation.setRetry(rpcInvocationResp.getRetry() - 1);
-                        RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
-                        SEND_QUEUE.add(rpcInvocation);
                     }
                 }
             }
+            if (OBJECT.equals(object)) {
+                //超时重试
+                if (System.currentTimeMillis() - beginTime > timeOut) {
+                    retryTimes++;
+                    //重新请求
+                    rpcInvocation.setResponse(null);
+                    //每次重试之后都会将retry值扣减1
+                    rpcInvocation.setRetry(rpcInvocation.getRetry() - 1);
+                    RESP_MAP.put(rpcInvocation.getUuid(), OBJECT);
+                    SEND_QUEUE.add(rpcInvocation);
+                }
+            }
         }
+        //应对一些请求超时的情况
         RESP_MAP.remove(rpcInvocation.getUuid());
         throw new TimeoutException("Wait for response from server on client " + timeOut + "ms,retry times is " + retryTimes + ",service's name is " + rpcInvocation.getTargetServiceName() + "#" + rpcInvocation.getTargetMethod());
     }

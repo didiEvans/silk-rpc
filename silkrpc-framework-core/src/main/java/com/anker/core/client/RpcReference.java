@@ -1,6 +1,7 @@
 package com.anker.core.client;
 
-import javassist.util.proxy.ProxyFactory;
+
+import com.anker.core.proxy.ProxyFactory;
 
 public class RpcReference {
 

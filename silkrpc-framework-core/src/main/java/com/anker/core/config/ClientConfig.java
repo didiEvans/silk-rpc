@@ -39,6 +39,11 @@ public class ClientConfig {
      */
     private Integer maxServerRespDataSize;
 
+    private String serverAddr;
+
+    private Integer port;
+
+
     public Integer getMaxServerRespDataSize() {
         return maxServerRespDataSize;
     }
@@ -101,5 +106,21 @@ public class ClientConfig {
 
     public void setProxyType(String proxyType) {
         this.proxyType = proxyType;
+    }
+
+    public String getServerAddr() {
+        return serverAddr;
+    }
+
+    public void setServerAddr(String serverAddr) {
+        this.serverAddr = serverAddr;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 }
