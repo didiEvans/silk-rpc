@@ -11,7 +11,9 @@
     <modules>
         <module>silk-rpc-spring-boot-starter</module>
         <module>silk-rpc-test</module>
-        <module>silk-rpc-spring-boot-starter/silk-rpc-annotation</module>
+        <module>silk-rpc-core</module>
+        <module>silk-rpc-common</module>
+        <module>silk-rpc-annotation</module>
     </modules>
 
 

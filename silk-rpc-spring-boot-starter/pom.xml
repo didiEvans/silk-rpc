@@ -12,9 +12,5 @@
     <artifactId>silk-rpc-spring-boot-starter</artifactId>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>silk-rpc-common</module>
-        <module>silk-rpc-core</module>
-    </modules>
 
 </project>
