@@ -1,6 +1,6 @@
 package com.anker.core.proxy.jdk;
 
-import com.anker.core.client.RpcReferenceWrapper;
+import com.anker.core.wrapper.RpcReferenceWrapper;
 import com.anker.core.proxy.ProxyFactory;
 
 import java.lang.reflect.Proxy;

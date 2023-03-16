@@ -12,6 +12,11 @@ import org.apache.zookeeper.data.Stat;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * curator zk 客户端工具
+ *
+ * @author Anker
+ */
 public class CuratorZookeeperClient extends AbstractZookeeperClient {
 
     private CuratorFramework client;
@@ -61,8 +66,7 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient {
     @Override
     public List<String> getChildrenData(String path) {
         try {
-            List<String> childrenData = client.getChildren().forPath(path);
-            return childrenData;
+            return client.getChildren().forPath(path);
         } catch (KeeperException.NoNodeException e) {
             return null;
         } catch (Exception e) {

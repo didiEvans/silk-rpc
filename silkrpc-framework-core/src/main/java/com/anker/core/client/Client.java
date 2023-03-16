@@ -1,7 +1,8 @@
 package com.anker.core.client;
 
 import com.alibaba.fastjson.JSON;
-import com.anker.common.rpc.RpcInvocation;
+import com.anker.core.universal.RpcInvocation;
+import com.anker.core.cache.CommonClientCache;
 import com.anker.core.codec.Decoder;
 import com.anker.core.codec.Encoder;
 import com.anker.core.config.ClientConfig;
@@ -60,21 +61,6 @@ public class Client {
         return new RpcReference(new JDKProxyFactory());
     }
 
-
-    public static void main(String[] args) throws Throwable {
-        Client client = new Client();
-        ClientConfig clientConfig = new ClientConfig();
-        clientConfig.setPort(9090);
-        clientConfig.setServerAddr("localhost");
-        client.setClientConfig(clientConfig);
-        RpcReference rpcReference = client.startClientApplication();
-        DataService dataService = rpcReference.get(DataService.class);
-        for(int i=0;i<100;i++){
-            String result = dataService.sendData("test");
-            System.out.println(result);
-        }
-    }
-
     /**
      * 开启发送线程，专门从事将数据包发送给服务端，起到一个解耦的效果
      * @param channelFuture
@@ -101,7 +87,7 @@ public class Client {
             while (true) {
                 try {
                     //阻塞模式
-                    RpcInvocation data = SEND_QUEUE.take();
+                    RpcInvocation data = CommonClientCache.SEND_QUEUE.take();
                     //将RpcInvocation封装到RpcProtocol对象中，然后发送给服务端，这里正好对应了上文中的ServerHandler
                     String json = JSON.toJSONString(data);
                     RpcProtocol rpcProtocol = new RpcProtocol(json.getBytes());

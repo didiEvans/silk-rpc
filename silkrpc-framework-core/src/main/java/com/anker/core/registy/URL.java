@@ -1,8 +1,11 @@
 package com.anker.core.registy;
 
+import com.anker.core.registy.zk.ProviderNodeInfo;
+
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 地址类
@@ -58,6 +61,33 @@ public class URL {
         this.parameters = parameters;
     }
 
+    @Override
+    public String toString() {
+        return "URL{" +
+                "applicationName='" + applicationName + '\'' +
+                ", serviceName='" + serviceName + '\'' +
+                ", parameters=" + parameters +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()){
+            return false;
+        }
+        URL url = (URL) o;
+        return Objects.equals(applicationName, url.applicationName) &&
+                Objects.equals(serviceName, url.serviceName) &&
+                Objects.equals(parameters, url.parameters);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(applicationName, serviceName, parameters);
+    }
 
     /**
      * 将URL转换为写入zk的provider节点下的一段字符串

@@ -1,6 +1,6 @@
 package com.anker.core.dispatcher;
 
-import com.anker.common.rpc.RpcInvocation;
+import com.anker.core.universal.RpcInvocation;
 import com.anker.core.protocol.RpcProtocol;
 import com.anker.core.server.ServerChannelReadData;
 

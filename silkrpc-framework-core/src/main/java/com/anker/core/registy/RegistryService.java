@@ -10,7 +10,7 @@ public interface RegistryService {
      * 当出现网络抖动的时候需要进行适当的重试做法
      * 注册服务url的时候需要写入持久化文件中
      *
-     * @param url
+     * @param url 服务地址
      */
     void register(URL url);
 
@@ -21,14 +21,14 @@ public interface RegistryService {
      * 下线的服务必须保证url是完整匹配的
      * 移除持久化文件中的一些内容信息
      *
-     * @param url
+     * @param url 服务地址
      */
-    void unRegister(URL url);
+    void offline(URL url);
 
     /**
      * 消费方订阅服务
      *
-     * @param url
+     * @param url 服务地址
      */
     void subscribe(URL url);
 
@@ -36,7 +36,7 @@ public interface RegistryService {
     /**
      * 执行取消订阅内部的逻辑
      *
-     * @param url
+     * @param url 服务地址
      */
     void doUnSubscribe(URL url);
 

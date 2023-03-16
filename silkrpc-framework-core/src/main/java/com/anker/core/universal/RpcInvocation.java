@@ -1,4 +1,4 @@
-package com.anker.common.rpc;
+package com.anker.core.universal;
 
 import java.io.Serializable;
 import java.util.HashMap;

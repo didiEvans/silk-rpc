@@ -2,6 +2,7 @@ package com.anker.core.client;
 
 
 import com.anker.core.proxy.ProxyFactory;
+import com.anker.core.wrapper.RpcReferenceWrapper;
 
 public class RpcReference {
 

@@ -1,10 +1,11 @@
 package com.anker.core.cache;
 
-import com.anker.common.rpc.RpcInvocation;
+import com.anker.core.universal.RpcInvocation;
 import com.anker.core.config.ClientConfig;
+import com.anker.core.registy.zk.AbstractRegister;
 import com.anker.core.serialize.SerializeFactory;
+import com.anker.core.wrapper.ChannelFutureWrapper;
 
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -27,7 +28,7 @@ public class CommonClientCache {
     /**
      * 客户端订阅的服务
      */
-    public static List<URL> SUBSCRIBE_SERVICE_LIST = new ArrayList<>();
+    public static List<String> SUBSCRIBE_SERVICE_LIST = new ArrayList<>();
     public static Map<String, Map<String, String>> URL_MAP = new ConcurrentHashMap<>();
     public static Set<String> SERVER_ADDRESS = new HashSet<>();
     /**

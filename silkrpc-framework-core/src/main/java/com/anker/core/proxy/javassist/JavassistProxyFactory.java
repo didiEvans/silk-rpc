@@ -1,6 +1,6 @@
 package com.anker.core.proxy.javassist;
 
-import com.anker.core.client.RpcReferenceWrapper;
+import com.anker.core.wrapper.RpcReferenceWrapper;
 import com.anker.core.proxy.ProxyFactory;
 
 public class JavassistProxyFactory  implements ProxyFactory {

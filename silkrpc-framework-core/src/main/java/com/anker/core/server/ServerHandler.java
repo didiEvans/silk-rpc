@@ -2,7 +2,7 @@ package com.anker.core.server;
 
 
 import com.alibaba.fastjson.JSON;
-import com.anker.common.rpc.RpcInvocation;
+import com.anker.core.universal.RpcInvocation;
 import com.anker.core.cache.CommonServerCache;
 import com.anker.core.protocol.RpcProtocol;
 import io.netty.channel.Channel;

@@ -1,6 +1,6 @@
 package com.anker.core.proxy;
 
-import com.anker.core.client.RpcReferenceWrapper;
+import com.anker.core.wrapper.RpcReferenceWrapper;
 
 /**
  * 代理工厂
