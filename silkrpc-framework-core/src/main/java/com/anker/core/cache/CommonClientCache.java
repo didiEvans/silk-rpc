@@ -1,5 +1,7 @@
 package com.anker.core.cache;
 
+import com.anker.core.router.IRouter;
+import com.anker.core.universal.ChannelFuturePollingRef;
 import com.anker.core.universal.RpcInvocation;
 import com.anker.core.config.ClientConfig;
 import com.anker.core.registy.zk.AbstractRegister;
@@ -29,7 +31,13 @@ public class CommonClientCache {
      * 客户端订阅的服务
      */
     public static List<String> SUBSCRIBE_SERVICE_LIST = new ArrayList<>();
+    /**
+     * URL_MAP
+     */
     public static Map<String, Map<String, String>> URL_MAP = new ConcurrentHashMap<>();
+    /**
+     * 服务端地址
+     */
     public static Set<String> SERVER_ADDRESS = new HashSet<>();
     /**
      * 远程调用map -> key:需要调用的serviceName value:与多个服务提供者建立的连接

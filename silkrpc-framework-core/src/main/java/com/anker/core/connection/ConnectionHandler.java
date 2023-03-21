@@ -83,22 +83,16 @@ public class ConnectionHandler {
     public static void disConnect(String providerServiceName, String providerIp) {
         CommonClientCache.SERVER_ADDRESS.remove(providerIp);
         List<ChannelFutureWrapper> channelFutureWrappers = CommonClientCache.CONNECT_MAP.get(providerServiceName);
-        if (CollUtil.isEmpty(channelFutureWrappers)) {
-            Iterator<ChannelFutureWrapper> iterator = channelFutureWrappers.iterator();
-            while (iterator.hasNext()) {
-                ChannelFutureWrapper channelFutureWrapper = iterator.next();
-                if (providerIp.equals(channelFutureWrapper.getHost() + ":" + channelFutureWrapper.getPort())) {
-                    iterator.remove();
-                }
-            }
+        if (CollUtil.isNotEmpty(channelFutureWrappers)) {
+            channelFutureWrappers.removeIf(channelFutureWrapper -> providerIp.equals(channelFutureWrapper.getHost() + ":" + channelFutureWrapper.getPort()));
         }
     }
 
     /**
      * 默认走随机策略获取ChannelFuture
      *
-     * @param providerServiceName
-     * @return
+     * @param providerServiceName   服务提供者名称
+     * @return {@link ChannelFuture}
      */
     public static ChannelFuture getChannelFuture(String providerServiceName) {
         List<ChannelFutureWrapper> channelFutureWrappers = CommonClientCache.CONNECT_MAP.get(providerServiceName);

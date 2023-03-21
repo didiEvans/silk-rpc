@@ -5,6 +5,7 @@ import com.anker.common.utils.IpUtil;
 import com.anker.core.cache.CommonServerCache;
 import com.anker.core.codec.Decoder;
 import com.anker.core.codec.Encoder;
+import com.anker.core.config.PropertiesBootstrap;
 import com.anker.core.config.ServerConfig;
 import com.anker.core.registy.RegistryService;
 import com.anker.core.registy.URL;
