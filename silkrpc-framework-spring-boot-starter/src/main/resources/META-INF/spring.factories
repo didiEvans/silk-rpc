@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.anker.rpc.spring.starter.configuration.SilkRpcServerAutoConfiguration,\
-com.anker.rpc.spring.starter.configuration.SilkRpcClientAutoConfiguration
