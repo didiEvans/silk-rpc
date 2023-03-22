@@ -8,6 +8,8 @@ import com.anker.rpc.core.wrapper.ChannelFutureWrapper;
 
 import java.util.List;
 
+import static com.anker.rpc.core.cache.CommonClientCache.IROUTER;
+
 public class ProviderNodeDataChangeListener implements SilkRpcListener<RpcNodeChangeEvent> {
 
     @Override

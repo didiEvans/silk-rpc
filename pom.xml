@@ -10,9 +10,10 @@
     <version>1.0.0</version>
     <modules>
         <module>silkrpc-framework-spring-boot-starter</module>
-        <module>silkrpc-framework-test</module>
+        <module>silkrpc-framework-example</module>
         <module>silkrpc-framework-core</module>
         <module>silkrpc-framework-annotation</module>
+        <module>silkrpc-framework-example</module>
     </modules>
 
 

@@ -2,8 +2,10 @@ package com.anker.rpc.core.registy.zk;
 
 import com.anker.rpc.core.event.RocEvent;
 import com.anker.rpc.core.event.impl.RpcDataUpdateEvent;
+import com.anker.rpc.core.listener.SilkRpcListenerLoader;
 import com.anker.rpc.core.registy.RegistryService;
 import com.anker.rpc.core.registy.URL;
+import com.anker.rpc.core.wrapper.URLChangeWrapper;
 
 import java.util.List;
 
@@ -90,7 +92,7 @@ public class ZookeeperRegister extends AbstractRegister implements RegistryServi
             urlChangeWrapper.setServiceName(path.split("/")[2]);
             //自定义的一套事件监听组件
             RocEvent iRpcEvent = new RpcDataUpdateEvent(urlChangeWrapper);
-            IRpcListenerLoader.sendEvent(iRpcEvent);
+            SilkRpcListenerLoader.sendEvent(iRpcEvent);
             //收到回调之后在注册一次监听，这样能保证一直都收到消息
             watchChildNodeData(path);
         });
@@ -105,12 +107,5 @@ public class ZookeeperRegister extends AbstractRegister implements RegistryServi
     public void doUnSubscribe(URL url) {
         this.zkClient.deleteNode(getConsumerPath(url));
         super.doUnSubscribe(url);
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        ZookeeperRegister zookeeperRegister = new ZookeeperRegister("localhost:2181");
-        List<String> urls = zookeeperRegister.getProviderIps(DataService.class.getName());
-        System.out.println(urls);
-        Thread.sleep(2000000);
     }
 }

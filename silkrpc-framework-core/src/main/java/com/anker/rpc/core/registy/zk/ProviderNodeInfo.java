@@ -10,6 +10,9 @@ public class ProviderNodeInfo {
 
     private String address;
 
+    private Integer weight;
+
+
     public String getServiceName() {
         return serviceName;
     }
@@ -26,11 +29,20 @@ public class ProviderNodeInfo {
         this.address = address;
     }
 
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
     @Override
     public String toString() {
         return "ProviderNodeInfo{" +
                 "serviceName='" + serviceName + '\'' +
                 ", address='" + address + '\'' +
+                ", weight=" + weight +
                 '}';
     }
 }

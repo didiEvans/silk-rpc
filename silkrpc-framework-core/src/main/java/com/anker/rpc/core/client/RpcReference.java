@@ -4,6 +4,8 @@ package com.anker.rpc.core.client;
 import com.anker.rpc.core.proxy.ProxyFactory;
 import com.anker.rpc.core.wrapper.RpcReferenceWrapper;
 
+import static com.anker.rpc.core.cache.CommonClientCache.CLIENT_CONFIG;
+
 public class RpcReference {
 
     public ProxyFactory proxyFactory;
