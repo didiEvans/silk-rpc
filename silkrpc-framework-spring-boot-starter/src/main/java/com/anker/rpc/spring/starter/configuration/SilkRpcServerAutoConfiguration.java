@@ -47,7 +47,7 @@ public class SilkRpcServerAutoConfiguration implements InitializingBean, Applica
             dataServiceServiceWrapper.setServiceToken(iRpcService.serviceToken());
             dataServiceServiceWrapper.setLimit(iRpcService.limit());
             server.exportService(dataServiceServiceWrapper);
-            LOGGER.info(">>>>>>>>>>>>>>> [irpc] {} export success! >>>>>>>>>>>>>>> ",beanName);
+            LOGGER.info(">>>>>>>>>>>>>>> [silk_rpc] {} export success! >>>>>>>>>>>>>>> ",beanName);
         }
         long end = System.currentTimeMillis();
         ServerShutdownHook.registryShutdownHook();
@@ -63,9 +63,8 @@ public class SilkRpcServerAutoConfiguration implements InitializingBean, Applica
     private void printBanner(){
         System.out.println();
         System.out.println("==============================================");
-        System.out.println("|||---------- IRpc Starting Now! ----------|||");
+        System.out.println("|||---------- Silk-Rpc Starting Now! ----------|||");
         System.out.println("==============================================");
-        System.out.println("源代码地址: https://gitee.com/IdeaHome_admin/irpc-framework");
         System.out.println("version: 1.0.0");
         System.out.println();
     }
