@@ -16,8 +16,8 @@ public class ClientFilterChain implements ClientFilter {
 
     private static final List<ClientFilter> I_CLIENT_FILTER_LIST = new ArrayList<>();
 
-    public void addClientFilter(ClientFilter ClientFilter) {
-        I_CLIENT_FILTER_LIST.add(ClientFilter);
+    public void addClientFilter(ClientFilter clientFilter) {
+        I_CLIENT_FILTER_LIST.add(clientFilter);
     }
 
     @Override

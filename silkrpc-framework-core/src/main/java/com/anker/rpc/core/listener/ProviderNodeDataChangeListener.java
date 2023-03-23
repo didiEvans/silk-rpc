@@ -8,7 +8,7 @@ import com.anker.rpc.core.wrapper.ChannelFutureWrapper;
 
 import java.util.List;
 
-import static com.anker.rpc.core.cache.CommonClientCache.IROUTER;
+import static com.anker.rpc.core.cache.CommonClientCache.ROUTER;
 
 public class ProviderNodeDataChangeListener implements SilkRpcListener<RpcNodeChangeEvent> {
 
@@ -24,7 +24,7 @@ public class ProviderNodeDataChangeListener implements SilkRpcListener<RpcNodeCh
                 URL url = new URL();
                 url.setServiceName(providerNodeInfo.getServiceName());
                 //更新权重 这里对应了文章顶部的RandomRouterImpl类
-                IROUTER.updateWeight(url);
+                ROUTER.updateWeight(url);
                 break;
             }
         }

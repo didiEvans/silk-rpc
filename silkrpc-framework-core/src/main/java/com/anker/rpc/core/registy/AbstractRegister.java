@@ -1,11 +1,10 @@
-package com.anker.rpc.core.registy.zk;
+package com.anker.rpc.core.registy;
 
 import com.anker.rpc.core.cache.CommonClientCache;
 import com.anker.rpc.core.cache.CommonServerCache;
-import com.anker.rpc.core.registy.RegistryService;
-import com.anker.rpc.core.registy.URL;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractRegister implements RegistryService {
 
@@ -58,4 +57,12 @@ public abstract class AbstractRegister implements RegistryService {
      * @param url 服务地址
      */
     public abstract void unRegister(URL url);
+
+    /**
+     * 获取服务的权重信息
+     *
+     * @param serviceName
+     * @return <ip:port --> urlString>,<ip:port --> urlString>,<ip:port --> urlString>,<ip:port --> urlString>
+     */
+    public abstract Map<String, String> getServiceWeightMap(String serviceName);
 }

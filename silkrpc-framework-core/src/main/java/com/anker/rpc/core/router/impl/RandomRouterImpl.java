@@ -2,7 +2,7 @@ package com.anker.rpc.core.router.impl;
 
 import com.anker.rpc.core.cache.CommonClientCache;
 import com.anker.rpc.core.registy.URL;
-import com.anker.rpc.core.router.IRouter;
+import com.anker.rpc.core.router.Router;
 import com.anker.rpc.core.router.Selector;
 import com.anker.rpc.core.wrapper.ChannelFutureWrapper;
 
@@ -13,7 +13,7 @@ import java.util.*;
  *
  * @author Anker
  */
-public class RandomRouterImpl implements IRouter {
+public class RandomRouterImpl implements Router {
 
     @Override
     public void refreshRouterArr(Selector selector) {

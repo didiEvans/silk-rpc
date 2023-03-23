@@ -8,7 +8,7 @@ import com.anker.rpc.core.wrapper.ChannelFutureWrapper;
  *
  * @author YBin
  */
-public interface IRouter {
+public interface Router {
 
 
 
