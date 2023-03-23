@@ -3,12 +3,20 @@ package com.anker.rpc.core.registy.zk;
 import com.anker.rpc.core.event.RocEvent;
 import com.anker.rpc.core.event.impl.RpcDataUpdateEvent;
 import com.anker.rpc.core.listener.SilkRpcListenerLoader;
+import com.anker.rpc.core.registy.AbstractRegister;
 import com.anker.rpc.core.registy.RegistryService;
 import com.anker.rpc.core.registy.URL;
 import com.anker.rpc.core.wrapper.URLChangeWrapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * zk注册器
+ *
+ * @author Anker
+ */
 public class ZookeeperRegister extends AbstractRegister implements RegistryService {
 
     private final AbstractZookeeperClient zkClient;
@@ -107,5 +115,16 @@ public class ZookeeperRegister extends AbstractRegister implements RegistryServi
     public void doUnSubscribe(URL url) {
         this.zkClient.deleteNode(getConsumerPath(url));
         super.doUnSubscribe(url);
+    }
+
+    @Override
+    public Map<String, String> getServiceWeightMap(String serviceName) {
+        List<String> nodeDataList = this.zkClient.getChildrenData(ROOT + "/" + serviceName + "/provider");
+        Map<String, String> result = new HashMap<>();
+        for (String ipAndHost : nodeDataList) {
+            String childData = this.zkClient.getNodeData(ROOT + "/" + serviceName + "/provider/" + ipAndHost);
+            result.put(ipAndHost, childData);
+        }
+        return result;
     }
 }

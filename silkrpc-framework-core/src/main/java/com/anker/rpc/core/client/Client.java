@@ -14,18 +14,21 @@ import com.anker.rpc.core.filter.client.impl.ClientFilterChain;
 import com.anker.rpc.core.listener.SilkRpcListenerLoader;
 import com.anker.rpc.core.protocol.RpcProtocol;
 import com.anker.rpc.core.proxy.ProxyFactory;
+import com.anker.rpc.core.registy.RegistryService;
 import com.anker.rpc.core.registy.URL;
-import com.anker.rpc.core.registy.zk.AbstractRegister;
-import com.anker.rpc.core.registy.zk.ZookeeperRegister;
-import com.anker.rpc.core.router.IRouter;
+import com.anker.rpc.core.registy.AbstractRegister;
+import com.anker.rpc.core.router.Router;
 import com.anker.rpc.core.serialize.SerializeFactory;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +37,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.anker.rpc.core.cache.CommonClientCache.*;
+import static com.anker.rpc.core.config.DefaultRpcConfigProperties.DEFAULT_DECODE_CHAR;
 import static com.anker.rpc.core.spi.ExtensionLoader.EXTENSION_LOADER_CLASS_CACHE;
 
 /**
@@ -45,8 +50,6 @@ public class Client {
 
 
     private final Logger log = LoggerFactory.getLogger(Client.class);
-
-    public static EventLoopGroup clientGroup = new NioEventLoopGroup();
 
     private ClientConfig clientConfig;
 
@@ -74,6 +77,8 @@ public class Client {
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel ch) {
+                ByteBuf delimiter = Unpooled.copiedBuffer(DEFAULT_DECODE_CHAR.getBytes());
+                ch.pipeline().addLast(new DelimiterBasedFrameDecoder(clientConfig.getMaxServerRespDataSize(), delimiter));
                 ch.pipeline().addLast(new Encoder());
                 ch.pipeline().addLast(new Decoder());
                 ch.pipeline().addLast(new ClientHandler());
@@ -91,12 +96,12 @@ public class Client {
         //初始化过滤链
         this.initFilterChain();
         //初始化代理工厂
-        return this.initAndProxyFactory();
+        return this.initRpcReference();
     }
 
-    private RpcReference initAndProxyFactory() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+    private RpcReference initRpcReference() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String proxyType = CommonClientCache.CLIENT_CONFIG.getProxyType();
-        CommonClientCache.EXTENSION_LOADER.loadExtension(ProxyFactory.class);
+        EXTENSION_LOADER.loadExtension(ProxyFactory.class);
         LinkedHashMap<String, Class<?>> proxyTypeMap = EXTENSION_LOADER_CLASS_CACHE.get(ProxyFactory.class.getName());
         Class<?> proxyTypeClass = proxyTypeMap.get(proxyType);
         if (proxyTypeClass == null) {
@@ -107,7 +112,7 @@ public class Client {
 
     private void initFilterChain() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         ClientFilterChain clientFilterChain = new ClientFilterChain();
-        CommonClientCache.EXTENSION_LOADER.loadExtension(ClientFilter.class);
+        EXTENSION_LOADER.loadExtension(ClientFilter.class);
         LinkedHashMap<String, Class<?>> filterChainMap = EXTENSION_LOADER_CLASS_CACHE.get(ClientFilter.class.getName());
         for (Map.Entry<String, Class<?>> filterChainEntry : filterChainMap.entrySet()) {
             String filterChainKey = filterChainEntry.getKey();
@@ -122,7 +127,7 @@ public class Client {
 
     private void initSerializer() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String clientSerialize = CommonClientCache.CLIENT_CONFIG.getClientSerialize();
-        CommonClientCache.EXTENSION_LOADER.loadExtension(SerializeFactory.class);
+        EXTENSION_LOADER.loadExtension(SerializeFactory.class);
         LinkedHashMap<String, Class<?>> serializeMap = EXTENSION_LOADER_CLASS_CACHE.get(SerializeFactory.class.getName());
         Class<?> serializeClass = serializeMap.get(clientSerialize);
         if (serializeClass == null) {
@@ -133,13 +138,13 @@ public class Client {
 
     private void initRouter() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         String routerStrategy = CommonClientCache.CLIENT_CONFIG.getRouterStrategy();
-        CommonClientCache.EXTENSION_LOADER.loadExtension(IRouter.class);
-        LinkedHashMap<String, Class<?>> routerMap = EXTENSION_LOADER_CLASS_CACHE.get(IRouter.class.getName());
+        EXTENSION_LOADER.loadExtension(Router.class);
+        LinkedHashMap<String, Class<?>> routerMap = EXTENSION_LOADER_CLASS_CACHE.get(Router.class.getName());
         Class<?> routerClass = routerMap.get(routerStrategy);
         if (routerClass == null) {
             throw new RuntimeException("no match routerStrategyClass for " + routerStrategy);
         }
-        CommonClientCache.IROUTER = (IRouter) routerClass.newInstance();
+        CommonClientCache.ROUTER = (Router) routerClass.newInstance();
     }
 
     public void initClientConfig() {
@@ -151,15 +156,24 @@ public class Client {
      *
      * @param serviceBean
      */
-    public void doSubscribeService(Class serviceBean) {
-        if (abstractRegister == null) {
-            abstractRegister = new ZookeeperRegister(clientConfig.getRegisterAddr());
+    public void doSubscribeService(Class<?> serviceBean) {
+        if (ABSTRACT_REGISTER == null) {
+            try {
+                EXTENSION_LOADER.loadExtension(RegistryService.class);
+                Map<String, Class<?>> registerMap = EXTENSION_LOADER_CLASS_CACHE.get(RegistryService.class.getName());
+                Class<?> registerClass = registerMap.get(clientConfig.getRegisterType());
+                ABSTRACT_REGISTER = (AbstractRegister) registerClass.newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException("registryServiceType unKnow,error is ", e);
+            }
         }
         URL url = new URL();
         url.setApplicationName(clientConfig.getApplicationName());
         url.setServiceName(serviceBean.getName());
         url.addParameter("host", IpUtil.getIpAddr());
-        abstractRegister.subscribe(url);
+        Map<String, String> result = ABSTRACT_REGISTER.getServiceWeightMap(serviceBean.getName());
+        URL_MAP.put(serviceBean.getName(), result);
+        ABSTRACT_REGISTER.subscribe(url);
     }
 
     /**
