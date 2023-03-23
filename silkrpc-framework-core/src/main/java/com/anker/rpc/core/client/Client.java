@@ -158,7 +158,7 @@ public class Client {
         URL url = new URL();
         url.setApplicationName(clientConfig.getApplicationName());
         url.setServiceName(serviceBean.getName());
-        url.addParameter("host", IpUtil.getIpAddr());
+        url.addParameter("host", IpUtil.getIpAddress());
         abstractRegister.subscribe(url);
     }
 

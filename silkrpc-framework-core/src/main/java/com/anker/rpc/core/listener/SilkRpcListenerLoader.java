@@ -34,6 +34,8 @@ public class SilkRpcListenerLoader {
 
     public void init() {
         registerListener(new ServiceUpdateListener());
+        registerListener(new ServiceDes());
+        registerListener(new ProviderNodeDataChangeListener());
     }
 
     /**

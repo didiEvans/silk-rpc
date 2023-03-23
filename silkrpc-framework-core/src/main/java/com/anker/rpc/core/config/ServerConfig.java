@@ -7,7 +7,7 @@ package com.anker.rpc.core.config;
  */
 public class ServerConfig {
 
-    private Integer port;
+    private Integer serverPort;
 
     private String registerAddr;
 
@@ -30,12 +30,12 @@ public class ServerConfig {
     private Integer maxConnections;
 
 
-    public Integer getPort() {
-        return port;
+    public Integer getServerPort() {
+        return serverPort;
     }
 
-    public void setPort(Integer port) {
-        this.port = port;
+    public void setServerPort(Integer serverPort) {
+        this.serverPort = serverPort;
     }
 
     public String getRegisterAddr() {

@@ -51,4 +51,11 @@ public abstract class AbstractRegister implements RegistryService {
      * @return
      */
     public abstract List<String> getProviderIps(String serviceName);
+
+    /**
+     * 服务注销
+     *
+     * @param url 服务地址
+     */
+    public abstract void unRegister(URL url);
 }

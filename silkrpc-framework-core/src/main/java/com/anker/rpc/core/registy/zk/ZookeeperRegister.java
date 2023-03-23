@@ -9,6 +9,8 @@ import com.anker.rpc.core.wrapper.URLChangeWrapper;
 
 import java.util.List;
 
+import static com.anker.rpc.core.cache.CommonServerCache.PROVIDER_URL_SET;
+
 public class ZookeeperRegister extends AbstractRegister implements RegistryService {
 
     private final AbstractZookeeperClient zkClient;
@@ -33,6 +35,10 @@ public class ZookeeperRegister extends AbstractRegister implements RegistryServi
         return this.zkClient.getChildrenData(ROOT + "/" + serviceName + "/provider");
     }
 
+    @Override
+    public void unRegister(URL url) {
+        PROVIDER_URL_SET.remove(url);
+    }
 
     @Override
     public void register(URL url) {

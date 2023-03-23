@@ -33,7 +33,7 @@ public class PropertiesBootstrap {
             throw new RuntimeException("loadServerConfigFromLocal fail,e is {}", e);
         }
         ServerConfig serverConfig = new ServerConfig();
-        serverConfig.setPort(PropertiesLoader.getPropertiesIntegerDefault(SERVER_PORT, DefaultRpcConfigProperties.DEFAULT_SERVER_PORT));
+        serverConfig.setServerPort(PropertiesLoader.getPropertiesIntegerDefault(SERVER_PORT, DefaultRpcConfigProperties.DEFAULT_SERVER_PORT));
         serverConfig.setApplicationName(PropertiesLoader.getPropertiesStrDefault(APPLICATION_NAME, DefaultRpcConfigProperties.DEFAULT_PROVIDER_APPLICATION_NAME));
         serverConfig.setRegisterAddr(PropertiesLoader.getPropertiesStrDefault(REGISTER_ADDRESS, DefaultRpcConfigProperties.DEFAULT_REGISTER_ADDR));
         serverConfig.setRegisterType(PropertiesLoader.getPropertiesStrDefault(REGISTER_TYPE, DefaultRpcConfigProperties.DEFAULT_REGISTER_TYPE));

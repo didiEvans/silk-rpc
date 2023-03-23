@@ -12,7 +12,7 @@ import java.util.Enumeration;
  */
 public class IpUtil {
 
-    public static String getIpAddr() {
+    public static String getIpAddress() {
         try {
             Enumeration<NetworkInterface> allNetInterfaces = NetworkInterface.getNetworkInterfaces();
             InetAddress ip = null;
