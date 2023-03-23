@@ -1,6 +1,6 @@
 package com.anker.rpc.core.router;
 
-import com.anker.rpc.core.registy.URL;
+import com.anker.rpc.core.registry.URL;
 import com.anker.rpc.core.wrapper.ChannelFutureWrapper;
 
 /**

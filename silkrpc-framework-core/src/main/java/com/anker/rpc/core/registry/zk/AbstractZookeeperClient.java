@@ -1,4 +1,4 @@
-package com.anker.rpc.core.registy.zk;
+package com.anker.rpc.core.registry.zk;
 
 import org.apache.zookeeper.Watcher;
 

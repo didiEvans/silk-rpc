@@ -2,7 +2,7 @@ package com.anker.rpc.core.listener;
 
 
 import com.anker.rpc.core.event.impl.RpcDestroyEvent;
-import com.anker.rpc.core.registy.URL;
+import com.anker.rpc.core.registry.URL;
 
 import static com.anker.rpc.core.cache.CommonServerCache.PROVIDER_URL_SET;
 import static com.anker.rpc.core.cache.CommonServerCache.REGISTRY_SERVICE;

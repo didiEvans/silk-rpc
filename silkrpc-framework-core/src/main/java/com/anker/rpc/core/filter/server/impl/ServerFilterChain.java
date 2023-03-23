@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Anker
  */
-public class ServerFilterChain implements ServerFilter {
+public class ServerFilterChain {
     
     private static final List<ServerFilter> I_SERVER_FILTERS = new ArrayList<>();
 
@@ -19,7 +19,6 @@ public class ServerFilterChain implements ServerFilter {
         I_SERVER_FILTERS.add(serverFilter);
     }
 
-    @Override
     public void doFilter(RpcInvocation rpcInvocation) {
         for (ServerFilter serverFilter : I_SERVER_FILTERS) {
             serverFilter.doFilter(rpcInvocation);

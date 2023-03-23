@@ -15,5 +15,5 @@ public interface ProxyFactory {
      * @return
      * @throws Throwable
      */
-    <T> T getProxy(RpcReferenceWrapper rpcReferenceWrapper) throws Throwable;
+    <T> T getProxy(RpcReferenceWrapper<T> rpcReferenceWrapper) throws Throwable;
 }

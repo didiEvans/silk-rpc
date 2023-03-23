@@ -1,11 +1,11 @@
-package com.anker.rpc.core.registy.zk;
+package com.anker.rpc.core.registry.zk;
 
 import com.anker.rpc.core.event.RocEvent;
 import com.anker.rpc.core.event.impl.RpcDataUpdateEvent;
 import com.anker.rpc.core.listener.SilkRpcListenerLoader;
-import com.anker.rpc.core.registy.AbstractRegister;
-import com.anker.rpc.core.registy.RegistryService;
-import com.anker.rpc.core.registy.URL;
+import com.anker.rpc.core.registry.AbstractRegister;
+import com.anker.rpc.core.registry.RegistryService;
+import com.anker.rpc.core.registry.URL;
 import com.anker.rpc.core.wrapper.URLChangeWrapper;
 
 import java.util.HashMap;

@@ -1,6 +1,6 @@
-package com.anker.rpc.core.registy;
+package com.anker.rpc.core.registry;
 
-import com.anker.rpc.core.registy.zk.ProviderNodeInfo;
+import com.anker.rpc.core.registry.zk.ProviderNodeInfo;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;

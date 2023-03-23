@@ -1,4 +1,4 @@
-package com.anker.rpc.core.registy.zk;
+package com.anker.rpc.core.registry.zk;
 
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;

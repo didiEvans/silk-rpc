@@ -1,4 +1,4 @@
-package com.anker.rpc.core.registy;
+package com.anker.rpc.core.registry;
 
 import com.anker.rpc.core.cache.CommonClientCache;
 import com.anker.rpc.core.cache.CommonServerCache;

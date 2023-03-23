@@ -27,7 +27,6 @@ public class SilkRpcServerAutoConfiguration implements InitializingBean, Applica
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Server server = null;
         Map<String, Object> beanMap = applicationContext.getBeansWithAnnotation(SilkRpcService.class);
         if (beanMap.size() == 0) {
             //说明当前应用内部不需要对外暴露服务，无需执行下边多余的逻辑
@@ -36,7 +35,7 @@ public class SilkRpcServerAutoConfiguration implements InitializingBean, Applica
         //输出banner图案
         printBanner();
         long begin = System.currentTimeMillis();
-        server = new Server();
+        Server server = new Server();
         server.initServerConfig();
         SilkRpcListenerLoader iRpcListenerLoader = new SilkRpcListenerLoader();
         iRpcListenerLoader.init();

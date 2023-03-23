@@ -11,6 +11,11 @@
 
     <artifactId>silkrpc-framework-annotation</artifactId>
     <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>

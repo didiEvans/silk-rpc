@@ -1,0 +1,3 @@
+clientLogFilterImpl=com.anker.rpc.core.filter.client.impl.ClientLogFilterImpl
+groupFilterImpl=com.anker.rpc.core.filter.client.impl.GroupFilterImpl
+ipDirectInvokeFilterImpl=com.anker.rpc.core.filter.client.impl.IpDirectInvokeFilterImpl

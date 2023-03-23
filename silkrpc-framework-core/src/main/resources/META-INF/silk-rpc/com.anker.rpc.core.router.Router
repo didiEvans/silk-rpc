@@ -1,0 +1,2 @@
+random=com.anker.rpc.core.router.impl.RandomRouterImpl
+rotate=com.anker.rpc.core.router.impl.RotateRouterImpl

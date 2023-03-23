@@ -6,7 +6,7 @@ import com.anker.rpc.core.spi.ExtensionLoader;
 import com.anker.rpc.core.common.ChannelFuturePollingRef;
 import com.anker.rpc.core.common.RpcInvocation;
 import com.anker.rpc.core.config.ClientConfig;
-import com.anker.rpc.core.registy.AbstractRegister;
+import com.anker.rpc.core.registry.AbstractRegister;
 import com.anker.rpc.core.serialize.SerializeFactory;
 import com.anker.rpc.core.wrapper.ChannelFutureWrapper;
 

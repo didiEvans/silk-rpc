@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Anker
  */
-public class ClientFilterChain implements ClientFilter {
+public class ClientFilterChain {
 
     private static final List<ClientFilter> I_CLIENT_FILTER_LIST = new ArrayList<>();
 
@@ -20,7 +20,6 @@ public class ClientFilterChain implements ClientFilter {
         I_CLIENT_FILTER_LIST.add(clientFilter);
     }
 
-    @Override
     public void doFilter(List<ChannelFutureWrapper> src, RpcInvocation rpcInvocation) {
         for (ClientFilter clientFilter : I_CLIENT_FILTER_LIST) {
             clientFilter.doFilter(src, rpcInvocation);

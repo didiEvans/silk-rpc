@@ -1,0 +1,2 @@
+jdk=com.anker.rpc.core.proxy.jdk.JDKProxyFactory
+javassist=com.anker.rpc.core.proxy.javassist.JavassistProxyFactory

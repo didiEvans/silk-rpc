@@ -1,7 +1,7 @@
-package com.anker.rpc.core.registy.nacos;
+package com.anker.rpc.core.registry.nacos;
 
-import com.anker.rpc.core.registy.URL;
-import com.anker.rpc.core.registy.AbstractRegister;
+import com.anker.rpc.core.registry.URL;
+import com.anker.rpc.core.registry.AbstractRegister;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +13,10 @@ import java.util.Map;
  */
 public class NacosRegister extends AbstractRegister {
 
+    @Override
+    public void unRegister(URL url) {
+
+    }
 
     @Override
     public void doAfterSubscribe(URL url) {

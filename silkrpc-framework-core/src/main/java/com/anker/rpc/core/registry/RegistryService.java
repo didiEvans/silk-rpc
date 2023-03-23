@@ -1,4 +1,4 @@
-package com.anker.rpc.core.registy;
+package com.anker.rpc.core.registry;
 
 
 public interface RegistryService {

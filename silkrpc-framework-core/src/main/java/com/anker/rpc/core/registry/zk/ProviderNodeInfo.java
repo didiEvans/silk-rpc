@@ -1,4 +1,4 @@
-package com.anker.rpc.core.registy.zk;
+package com.anker.rpc.core.registry.zk;
 
 /**
  * 提供者的节点信息

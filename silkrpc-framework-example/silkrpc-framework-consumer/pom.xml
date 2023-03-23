@@ -33,5 +33,10 @@
             <artifactId>silkrpc-framework-spring-boot-starter</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.anker</groupId>
+            <artifactId>silkrpc-framework-provider</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 </project>

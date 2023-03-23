@@ -1,0 +1,2 @@
+zookeeper=com.anker.rpc.core.registry.zk.ZookeeperRegister
+nacos=com.anker.rpc.core.registry.nacos.NacosRegister

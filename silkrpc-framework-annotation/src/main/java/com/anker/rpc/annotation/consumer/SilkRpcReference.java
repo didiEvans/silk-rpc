@@ -1,7 +1,5 @@
 package com.anker.rpc.annotation.consumer;
 
-import org.springframework.stereotype.Component;
-
 import java.lang.annotation.*;
 
 /**
@@ -9,7 +7,7 @@ import java.lang.annotation.*;
  *
  * @author Anker
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface SilkRpcReference {

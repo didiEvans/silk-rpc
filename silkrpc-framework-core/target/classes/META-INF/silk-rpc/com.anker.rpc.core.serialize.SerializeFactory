@@ -1,0 +1,4 @@
+fastJson=com.anker.rpc.core.serialize.impl.FastJsonSerializeFactory
+hessian=com.anker.rpc.core.serialize.impl.HessianSerializeFactory
+jdk=com.anker.rpc.core.serialize.impl.JdkSerializeFactory
+kryo=com.anker.rpc.core.serialize.impl.KryoSerializeFactory

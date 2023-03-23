@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ServerAfterFilterChain implements ServerFilter {
+public class ServerAfterFilterChain {
 
 
     private static final List<ServerFilter> SERVER_FILTERS = new ArrayList<>();
@@ -16,7 +16,6 @@ public class ServerAfterFilterChain implements ServerFilter {
         SERVER_FILTERS.add(iServerFilter);
     }
 
-    @Override
     public void doFilter(RpcInvocation rpcInvocation) {
         for (ServerFilter serverFilter : SERVER_FILTERS) {
             serverFilter.doFilter(rpcInvocation);

@@ -5,4 +5,9 @@ import com.anler.rpc.provider.service.ProviderExampleService;
 
 @SilkRpcService
 public class ProviderExampleServiceImpl implements ProviderExampleService {
+
+    @Override
+    public String sayHello() {
+        return "hello silk rpc";
+    }
 }
