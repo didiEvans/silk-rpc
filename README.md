@@ -49,7 +49,7 @@ silk-rpc.server.max.data.size=4096
 
 ## step-3
 
-服务提供者标注注解
+服务提供者
 
 ```java
 package com.anler.rpc.provider.service.impl;
@@ -67,7 +67,7 @@ public class ProviderExampleServiceImpl implements ProviderExampleService {
 }
 ```
 
-消费者应用服务提供者
+服务消费者
 
 ```java
 @RestController
