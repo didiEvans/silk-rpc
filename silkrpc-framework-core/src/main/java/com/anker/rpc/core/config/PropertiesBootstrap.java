@@ -9,7 +9,6 @@ import java.io.IOException;
  */
 public class PropertiesBootstrap {
 
-    private volatile boolean configIsReady;
 
     public static final String SERVER_PORT = "silk-rpc.serverPort";
     public static final String REGISTER_ADDRESS = "silk-rpc.registerAddr";
@@ -26,13 +25,13 @@ public class PropertiesBootstrap {
     public static final String SERVER_MAX_DATA_SIZE = "silk-rpc.server.max.data.size";
     public static final String CLIENT_MAX_DATA_SIZE = "silk-rpc.client.max.data.size";
 
-    public static ServerConfig loadServerConfigFromLocal() {
+    public static ServerConfigProperties loadServerConfigFromLocal() {
         try {
             PropertiesLoader.loadConfiguration();
         } catch (IOException e) {
             throw new RuntimeException("loadServerConfigFromLocal fail,e is {}", e);
         }
-        ServerConfig serverConfig = new ServerConfig();
+        ServerConfigProperties serverConfig = new ServerConfigProperties();
         serverConfig.setServerPort(PropertiesLoader.getPropertiesIntegerDefault(SERVER_PORT, DefaultRpcConfigProperties.DEFAULT_SERVER_PORT));
         serverConfig.setApplicationName(PropertiesLoader.getPropertiesStrDefault(APPLICATION_NAME, DefaultRpcConfigProperties.DEFAULT_PROVIDER_APPLICATION_NAME));
         serverConfig.setRegisterAddr(PropertiesLoader.getPropertiesStrDefault(REGISTER_ADDRESS, DefaultRpcConfigProperties.DEFAULT_REGISTER_ADDR));

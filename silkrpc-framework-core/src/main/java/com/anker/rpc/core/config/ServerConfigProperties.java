@@ -5,7 +5,7 @@ package com.anker.rpc.core.config;
  *
  * @author Anker
  */
-public class ServerConfig {
+public class ServerConfigProperties {
 
     private Integer serverPort;
 

@@ -7,7 +7,7 @@ package com.anker.rpc.core.config;
  */
 public interface DefaultRpcConfigProperties {
 
-    String DEFAULT_PROPERTIES_FILE = "META-INF/silk-rpc.properties";
+    String DEFAULT_PROPERTIES_FILE = "silk-rpc.properties";
 
     String JDK_PROXY_TYPE = "jdk";
 

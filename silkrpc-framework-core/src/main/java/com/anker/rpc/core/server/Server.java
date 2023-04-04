@@ -7,7 +7,7 @@ import com.anker.rpc.core.codec.Decoder;
 import com.anker.rpc.core.codec.Encoder;
 import com.anker.rpc.core.common.utils.IpUtil;
 import com.anker.rpc.core.config.PropertiesBootstrap;
-import com.anker.rpc.core.config.ServerConfig;
+import com.anker.rpc.core.config.ServerConfigProperties;
 import com.anker.rpc.core.filter.server.ServerFilter;
 import com.anker.rpc.core.filter.server.impl.ServerAfterFilterChain;
 import com.anker.rpc.core.filter.server.impl.ServerBeforeFilterChain;
@@ -67,17 +67,17 @@ public class Server {
     /**
      * 服务端配置
      */
-    private ServerConfig serverConfig;
+    private ServerConfigProperties serverConfig;
     /**
      * 服务注册器
      */
     private RegistryService registryService;
 
-    public ServerConfig getServerConfig() {
+    public ServerConfigProperties getServerConfig() {
         return serverConfig;
     }
 
-    public void setServerConfig(ServerConfig serverConfig) {
+    public void setServerConfig(ServerConfigProperties serverConfig) {
         this.serverConfig = serverConfig;
     }
 
@@ -124,7 +124,7 @@ public class Server {
     }
 
     public void initServerConfig() throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        ServerConfig serverConfig = PropertiesBootstrap.loadServerConfigFromLocal();
+        ServerConfigProperties serverConfig = PropertiesBootstrap.loadServerConfigFromLocal();
         this.setServerConfig(serverConfig);
         SERVER_CONFIG = serverConfig;
         //初始化线程池和队列的配置

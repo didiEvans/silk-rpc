@@ -1,6 +1,6 @@
 package com.anker.rpc.core.cache;
 
-import com.anker.rpc.core.config.ServerConfig;
+import com.anker.rpc.core.config.ServerConfigProperties;
 import com.anker.rpc.core.dispatcher.ServerChannelDispatcher;
 import com.anker.rpc.core.filter.server.impl.ServerAfterFilterChain;
 import com.anker.rpc.core.filter.server.impl.ServerBeforeFilterChain;
@@ -41,7 +41,7 @@ public class CommonServerCache {
     /**
      * 服务端配置
      */
-    public static ServerConfig SERVER_CONFIG;
+    public static ServerConfigProperties SERVER_CONFIG;
     /**
      * 前置过滤器
      */
@@ -54,6 +54,9 @@ public class CommonServerCache {
      * 服务提供者包装类集合
      */
     public static final Map<String, ServiceWrapper> PROVIDER_SERVICE_WRAPPER_MAP = new ConcurrentHashMap<>();
+    /**
+     * 服务是否启动
+     */
     public static Boolean IS_STARTED = false;
     /**
      * 服务端请求转发器
